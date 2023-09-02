@@ -1,11 +1,26 @@
-import {useForm} from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import {User} from '../models/user'
 
 export default function RegisterPage() {
 
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit } = useForm<IFormInput>();
+    
+    interface IFormInput {
+        username: String;
+        email: String;
+        passwordOne: String;
+        passwordTwo: String;
+    }
 
     return (<div>
-        <form onSubmit={handleSubmit((data) => {
+        <form onSubmit={handleSubmit((data: IFormInput) => {
+
+            const userData: User = {
+
+                username: data.username,
+                email: data.email,
+                password: data.passwordOne
+            }
             console.log(data)
         })}>
         <input {...register("email")} id="email" placeholder="Email" type="email" required minLength={4} />

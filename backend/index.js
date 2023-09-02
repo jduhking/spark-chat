@@ -10,12 +10,14 @@ app.use(
         extended: true,
     })
     )
+// functions
 
 app.get('/', (req, res) => {
   res.send('Spark-Chat backend')
 })
 
 app.get('/users', db.getUsers)
+app.post('/users', db.addUser)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

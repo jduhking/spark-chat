@@ -1,28 +1,22 @@
-import { useState } from "react";
+
+import { useAppDispatch, useAppSelector } from '../app/hooks'
+import { incremented, amountAdded } from "../features/counter/counter-slice";
 import axios from 'axios';
 
 
 
 export default function HomePage() {
 
-  const[demoText, setDemoText] = useState('This is the home page man');
-  const url = '/';
+  const count = useAppSelector((state) => state.counter.value)
+  const dispatch = useAppDispatch()
 
-  const handlePress = async () => {
-    try {
-      const result = await axios.get(url);
-      setDemoText(result.data);
-      
-    } catch (error) {
-      console.log(error);
-    }
-
+  function handleClick() {
+    dispatch(amountAdded(3))
   }
-
   return (
     <>
-      <h1>{demoText}</h1>
-      <button/>
+      <h1>Counter</h1>
+      <button onClick={handleClick} >count is {count}</button>
     </>
   )
 }

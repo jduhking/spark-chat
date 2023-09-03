@@ -22,11 +22,11 @@ export default function RegisterPage() {
             body: JSON.stringify(data)
         });
         
-        console.log(response.json())
+        return response.json()
     }
 
     return (<div>
-        <form onSubmit={handleSubmit((data: IFormInput) => {
+        <form onSubmit={handleSubmit(async (data: IFormInput) => {
 
             const userData: User = {
 
@@ -35,7 +35,8 @@ export default function RegisterPage() {
                 password: data.passwordOne
             }
 
-            Register(userData)
+            const response = await Register(userData)
+            console.log(response)
             
         })}>
         <input {...register("email")} id="email" placeholder="Email" type="email" required minLength={4} />

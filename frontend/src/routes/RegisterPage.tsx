@@ -21,7 +21,8 @@ export default function RegisterPage() {
                 email: data.email,
                 password: data.passwordOne
             }
-            console.log(data)
+            fetch('http://localhost:8080/regi')
+            console.log(userData)
         })}>
         <input {...register("email")} id="email" placeholder="Email" type="email" required minLength={4} />
         <input {...register("username")} id="username" placeholder="Username" required minLength={3}/> 

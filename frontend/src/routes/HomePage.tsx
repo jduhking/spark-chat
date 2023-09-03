@@ -1,23 +1,30 @@
 
 import { useAppDispatch, useAppSelector } from '../app/hooks'
-import { incremented, amountAdded } from "../features/counter/counter-slice";
+import { login, logout } from '../features/login/login-slice'
 import axios from 'axios';
 
 
 
 export default function HomePage() {
 
-  const count = useAppSelector((state) => state.counter.value)
+  const isLogin = useAppSelector((state) => state.login.value)
   const dispatch = useAppDispatch()
 
-  function handleClick() {
-    dispatch(amountAdded(3))
+  const Login = () => {
+    dispatch(login())
   }
+
+  const Logout = () => {
+    dispatch(logout())
+  }
+
+
   return (
-    <>
-      <h1>Counter</h1>
-      <button onClick={handleClick} >count is {count}</button>
-    </>
+    <div>
+      {
+        isLogin ? (<button onClick={Logout}>Logout</button>) : (<button onClick={Login} >Login</button>) 
+      }
+    </div>
   )
 }
 

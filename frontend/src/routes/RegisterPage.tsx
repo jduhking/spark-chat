@@ -12,6 +12,19 @@ export default function RegisterPage() {
         passwordTwo: String;
     }
 
+    const Register = async (data : User) => {
+
+        const response = await fetch('http://localhost:8080/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        
+        console.log(response.json())
+    }
+
     return (<div>
         <form onSubmit={handleSubmit((data: IFormInput) => {
 
@@ -21,8 +34,9 @@ export default function RegisterPage() {
                 email: data.email,
                 password: data.passwordOne
             }
-            fetch('http://localhost:8080/regi')
-            console.log(userData)
+
+            Register(userData)
+            
         })}>
         <input {...register("email")} id="email" placeholder="Email" type="email" required minLength={4} />
         <input {...register("username")} id="username" placeholder="Username" required minLength={3}/> 

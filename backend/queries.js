@@ -20,7 +20,7 @@ const getUsers = (req, res) => {
 
 const addUser = (req, res) => {
     console.log(req)
-    const user = req.body.user
+    const user = req.body
 
     pool.query(`INSERT INTO t_users (username, email, password) VALUES ('${user.username}' 
     , '${user.email}', '${user.password}')`, (error, results) => {

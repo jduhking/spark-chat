@@ -33,7 +33,6 @@ const EmailExists = async (email) => {
     
 }
 
-
 const getUser = async (req, res) => {
 
     const user = req.body

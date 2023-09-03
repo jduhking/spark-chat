@@ -33,12 +33,47 @@ const EmailExists = async (email) => {
     
 }
 
+const getUser = async (req, res) => {
 
+    const user = req.body
+
+    console.log('Attempting to retrieve user')
+    console.log({ user: user})
+
+    if(user.username.length == 0 || user.password.length == 0){
+        res.status(400).json({ error: "some fields are empty" })
+        return
+    }
+
+    if(await UserNameExists(user.username) == false) {
+        console.log('user does not exist')
+        res.status(404).json({ error: "User does not exist"})
+        return
+    }
+
+    console.log('passed all checks')
+
+    pool.query(`SELECT * FROM t_users WHERE username = '${user.username}' AND password = '${ user.password }'`, (error, results) => {
+        if(error){
+            console.log(error)
+            res.status(500).json({error: "Something went wrong", message: error})
+            return
+        }
+        if(results.rows.length > 0){
+            res.status(200).json(results.rows)
+            return
+        }
+        res.status(404).json({error: "User does not exist"})
+
+        
+    })
+}
 
 const getUsers = (req, res) => {
     pool.query('SELECT * FROM t_users ORDER by userid ASC', (error, results) => {
     if(error){
-        throw error
+        res.status(404).json({error: "User does not exist"})
+        return
     }
     res.status(200).json(results.rows)
     })
@@ -72,7 +107,8 @@ const addUser = async (req, res) => {
     pool.query(`INSERT INTO t_users (username, email, password) VALUES ('${user.username}' 
     , '${user.email}', '${user.password}')`, (error, results) => {
     if(error){
-        throw error
+        res.status(500).json({error: error})
+        return
     }
     
     res.status(200).json({ message: "User successfully created\n" + user})
@@ -82,5 +118,6 @@ const addUser = async (req, res) => {
 
 module.exports = {
     getUsers,
+    getUser,
     addUser
 }

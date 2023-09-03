@@ -19,6 +19,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/users', db.getUsers)
+app.post('/login', db.getUser)
 app.post('/users', db.addUser)
 
 app.listen(port, () => {

@@ -1,26 +1,15 @@
-const express = require('express')
-const cors = require('cors')
-const bodyParser = require('body-parser')
-const app = express()
-const port = 8080
-const db = require('./queries')
+const express = require('express');
+const dotenv = require('dotenv');
 
-app.use(bodyParser.json())
-app.use(cors())
-app.use(
-    bodyParser.urlencoded({
-        extended: true,
-    })
-    )
-// functions
+dotenv.config();
+
+const app = express();
+const port = process.env.PORT;
 
 app.get('/', (req, res) => {
-  res.send('Spark-Chat backend')
-})
-
-app.get('/users', db.getUsers)
-app.post('/users', db.addUser)
+  res.send('Express + TypeScript Server');
+});
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`[server]: Server is running at http://localhost:${port}`);
+});

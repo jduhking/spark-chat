@@ -5,7 +5,7 @@ import { useAppNavigation } from '../utils/useAppNavigation';
 import { useForm, Controller, FieldValues } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as Yup from "yup"
-import { User } from '../models/User'
+
 
 interface LoginForm {
   email: string,
@@ -36,8 +36,7 @@ const LoginScreen = () => {
       body: JSON.stringify(formData)
   });
   
-  return response.json()
-
+    return response;
   }
 
   const {
@@ -53,10 +52,17 @@ const LoginScreen = () => {
   })
 
   const onSubmit = async (data: LoginForm) =>{ 
-    
-    console.log(data);
+  
     const response = await Login(data);
-    console.log(response);
+
+    if(response.status === 200){
+      console.log('User has been logged in!')
+      dispatch(login())
+        navigation.navigate("HomeStack", {
+          screen: 'Home'
+        })
+      }
+      
   };
   return (
     <View style={styles.container}>
@@ -99,6 +105,7 @@ const LoginScreen = () => {
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
     backgroundColor: '#fff',

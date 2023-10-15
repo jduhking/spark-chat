@@ -15,9 +15,9 @@ const login = async (req: Request<LoginData>, res: Response) => {
 
   console.log(`Attempting to login user.. ${email} 
   ${password}`)
-  
-  const response: Response = await db.login(req.body, res);
 
+  const response: Response = await db.login(req.body, res)
+  
   return response
 }
 

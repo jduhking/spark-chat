@@ -50,15 +50,21 @@ const login = async (loginData: LoginForm, res: Response) => {
     const {email, password} = loginData;
     pool.query(`SELECT * FROM t_users WHERE email='${email}' AND password='${password}'`, (error: any, results: any) => {
         if(error){
-            res.status(404).json({error: error.message})
-            console.log('User could not be found')
+            console.log('Error occured:', error.message);
+            res.status(500).json({ error: 'Internal server error'})
         } else {
-        res.status(200).json(results.rows);
-        console.log('User successfully authenticated')
+        if(results.rows.length === 0){
+
+            res.status(404).json({ error: 'User could not be found'})
+            console.log('Authentication failed')
+        } else {
+            res.status(200).json(results.rows);
+            console.log('User successfully authenticated')
+        }
         }
     })
-
     return res
+
 }
 
 const addUser = async (req: Request, res: Response) => {

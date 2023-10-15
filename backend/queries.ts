@@ -1,4 +1,6 @@
 require('dotenv').config()
+import {Request, Response} from 'express'
+import LoginForm from './models/login'
 const Pool = require('pg').Pool
 
 const pool = new Pool({
@@ -11,7 +13,7 @@ const pool = new Pool({
 
 // validation functions
 
-const UserNameExists = async (username) => {
+const UserNameExists = async (username: String) => {
 
     try {
         const result = await pool.query(`SELECT * FROM t_users WHERE username='${username}'`)
@@ -22,7 +24,7 @@ const UserNameExists = async (username) => {
    
 }
 
-const EmailExists = async (email) => {
+const EmailExists = async (email: String) => {
 
     try {
         const result = await pool.query(`SELECT * FROM t_users WHERE email='${email}'`)
@@ -35,8 +37,8 @@ const EmailExists = async (email) => {
 
 
 
-const getUsers = (req, res) => {
-    pool.query('SELECT * FROM t_users ORDER by userid ASC', (error, results) => {
+const getUsers = (req: Request, res: Response) => {
+    pool.query('SELECT * FROM t_users ORDER by userid ASC', (error: any, results: any) => {
     if(error){
         throw error
     }
@@ -44,7 +46,22 @@ const getUsers = (req, res) => {
     })
 }
 
-const addUser = async (req, res) => {
+const login = async (loginData: LoginForm, res: Response) => {
+    const {email, password} = loginData;
+    pool.query(`SELECT * FROM t_users WHERE email='${email}' AND password='${password}'`, (error: any, results: any) => {
+        if(error){
+            res.status(404).json({error: error.message})
+            console.log('User could not be found')
+        } else {
+        res.status(200).json(results.rows);
+        console.log('User successfully authenticated')
+        }
+    })
+
+    return res
+}
+
+const addUser = async (req: Request, res: Response) => {
     console.log({user: req.body})
 
     const user = req.body
@@ -70,7 +87,7 @@ const addUser = async (req, res) => {
     }
 
     pool.query(`INSERT INTO t_users (username, email, password) VALUES ('${user.username}' 
-    , '${user.email}', '${user.password}')`, (error, results) => {
+    , '${user.email}', '${user.password}')`, (error: any, results: any) => {
     if(error){
         throw error
     }
@@ -82,5 +99,6 @@ const addUser = async (req, res) => {
 
 module.exports = {
     getUsers,
+    login,
     addUser
 }

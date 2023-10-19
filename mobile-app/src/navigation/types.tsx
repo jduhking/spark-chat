@@ -6,8 +6,7 @@ export type RootStackParamList = {
     HomeStack: NavigatorScreenParams<HomeStackParamList>
 }
 export type AuthStackParamList = {
-    Login: undefined
-    Register: undefined
+    AuthScreen: undefined
 }
 export type HomeStackParamList = {
     Home: undefined

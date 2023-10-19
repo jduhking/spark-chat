@@ -2,7 +2,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import type { RootStackParamList, AuthStackParamList, HomeStackParamList} from './types';
-import LoginScreen from '../pages/LoginScreen';
+import AuthScreen from '../pages/AuthScreen';
 import HomeScreen from '../pages/HomeScreen';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -13,11 +13,11 @@ const AuthNavigator = () => {
     return(
         <AuthStack.Navigator 
         id='AuthStack'
-        initialRouteName='Login'
+        initialRouteName='AuthScreen'
         screenOptions={{
             headerShown: false
         }}>
-            <AuthStack.Screen name='Login' component={LoginScreen}/>
+            <AuthStack.Screen name='AuthScreen' component={AuthScreen}/>
         </AuthStack.Navigator>
     )
 }
